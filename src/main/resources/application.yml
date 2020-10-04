@@ -1,0 +1,50 @@
+server:
+  port: 8083
+  error:
+    include-message: always
+    include-binding-errors: always
+eureka:
+  client:
+    serviceUrl:
+      #defaultZone: http://192.168.99.101:8761/eureka
+      defaultZone: http://localhost:8761/eureka
+    healthcheck:
+      enabled: true
+    lease:
+      duration: 5
+  instance:
+    prefer-ip-address: true
+    #ip-address: http://192.168.99.101:8761/eureka
+    ip-address: http://localhost:8761/eureka
+spring:
+  application:
+    name: cabinet-manager2
+  cloud:
+    config:
+      #uri: http://192.168.99.101:8888
+      uri: http://localhost:8888
+  datasource:
+    url: jdbc:mariadb://192.168.99.101:3306/cabinet_student
+    username: root
+    password: sasa
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  jmx:
+    default-domain: cabinet-manager2
+    enabled: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      
+logging.level.org.hibernate.SQL: debug
+logging.level.io.swagger.models.parameters.AbstractSerializableParameter: ERROR
+
+app.jwtSecret: bezKoderSecretKey
+app.jwtExpirationMs: 86400000
