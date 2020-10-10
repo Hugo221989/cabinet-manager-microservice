@@ -22,11 +22,17 @@ import io.swagger.annotations.ApiParam;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/meeting")
+@RequestMapping("/appointment")
 @Api(value = "VALUE", description = "Administracion de citas de alumnos")
 public class CabinetMeetingController {
 	@Autowired
 	private MeetingService meetingService;
+	
+	@GetMapping("/getAllMeetings")
+	@ApiOperation(value = "Obtener todas las reuniones de un alumno", notes = "Este servicio web obtiene una lista de todas las reuniones de un alumno.", response = MeetingListDto.class, responseContainer = "MeetingListDto")
+	public MeetingListDto getAllMeetings() {
+		return this.meetingService.getAllMeetings();
+	}
 
 	@GetMapping("/getAllMeetingsByStudentId")
 	@ApiOperation(value = "Obtener todas las reuniones de un alumno", notes = "Este servicio web obtiene una lista de todas las reuniones de un alumno.", response = MeetingListDto.class, responseContainer = "MeetingListDto")
@@ -63,7 +69,7 @@ public class CabinetMeetingController {
 	
 	@DeleteMapping("/")
 	@ApiOperation(value = "Eliminar una reunion de un alumno", notes = "Este servicio web elimina la reunión seleccionada del alumno.", response = Void.class, responseContainer = "Void")
-	public ResponseEntity<Void> deleteStudentMeeting(@ApiParam(name ="id", example="1", value = "idMeeting", required = false)@RequestParam(required = false) Long idMeeting) {
+	public ResponseEntity<Void> deleteStudentMeeting(@ApiParam(name ="idMeeting", example="1", value = "idMeeting", required = false)@RequestParam(required = false) Long idMeeting) {
 		this.meetingService.deleteStudentMeeting(idMeeting);
 		return ResponseEntity.noContent().build();
 	}

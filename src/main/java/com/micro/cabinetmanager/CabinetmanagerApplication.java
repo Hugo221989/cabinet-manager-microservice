@@ -10,15 +10,20 @@ import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 
 @SpringBootApplication
-@EnableEurekaClient
-@EnableCircuitBreaker
+//@EnableEurekaClient
+@EnableDiscoveryClient
+//@EnableCircuitBreaker
+@EnableHystrix
 @EnableCaching
+@EnableFeignClients
 public class CabinetmanagerApplication extends SpringBootServletInitializer {
 
 	@Override
@@ -31,18 +36,18 @@ public class CabinetmanagerApplication extends SpringBootServletInitializer {
 	}
 	
 //	@LoadBalanced
-	@Bean
-	RestTemplate restTemplate() {
-	      return new RestTemplate();
-	  }
-	
-	@Bean
-	public RestTemplateCustomizer readTimeoutCustomizer() {
-	    return restTemplate -> {
-	        HttpComponentsClientHttpRequestFactory clientRequestFactory = new HttpComponentsClientHttpRequestFactory();
-	        clientRequestFactory.setReadTimeout(30000);
-	        restTemplate.setRequestFactory(clientRequestFactory);
-	    };
-	}
+//	@Bean
+//	RestTemplate restTemplate() {
+//	      return new RestTemplate();
+//	  }
+//	
+//	@Bean
+//	public RestTemplateCustomizer readTimeoutCustomizer() {
+//	    return restTemplate -> {
+//	        HttpComponentsClientHttpRequestFactory clientRequestFactory = new HttpComponentsClientHttpRequestFactory();
+//	        clientRequestFactory.setReadTimeout(30000);
+//	        restTemplate.setRequestFactory(clientRequestFactory);
+//	    };
+//	}
 
 }

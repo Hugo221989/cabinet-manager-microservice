@@ -1,11 +1,12 @@
 server:
   port: 8083
-eureka:
+spring:
+  application:
+    name: cabinet-manager2
+feign:
   client:
-    serviceUrl:
-      #defaultZone: http://192.168.99.101:8761/eureka
-      defaultZone: http://localhost:8761/eureka
-  instance:
-    prefer-ip-address: true
-    #ip-address: http://192.168.99.101:8761/eureka
-    ip-address: http://localhost:8761/eureka
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 10000
+        loggerLevel: full

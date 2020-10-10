@@ -32,14 +32,14 @@ import io.swagger.annotations.ApiParam;
 public class CabinetUserController {
 	
 	@Autowired
-	private StudentDataService userDataService;
+	private StudentDataService studentDataService;
 
 	@GetMapping("/")
 	@ApiOperation(value = "Obtener un alumno", notes = "Este servicio web obtiene los datos de un alumno en particular.", response = StudentDto.class, responseContainer = "StudentDto")
 	public ResponseEntity<StudentDto> getStudentData(@ApiParam(name ="id", example="1", value = "id", required = false)@RequestParam(required = false) Long id) {
 		StudentDto student;
 		try {
-			student = this.userDataService.getStudentDataById(id);
+			student = this.studentDataService.getStudentDataById(id);
 		}catch(Exception e) {
 			return new ResponseEntity("No encontrado", HttpStatus.NOT_FOUND);
 		}
@@ -51,23 +51,35 @@ public class CabinetUserController {
 	public ResponseEntity<StudentDto> getStudentDataByName(@ApiParam(name ="name", example="1", value = "name", required = false)@RequestParam(required = false) String name) {
 		StudentDto student;
 		try {
-			student = this.userDataService.getStudentDataByName(name);
+			student = this.studentDataService.getStudentDataByName(name);
 		}catch(Exception e) {
 			return new ResponseEntity("No encontrado", HttpStatus.NOT_FOUND);
 		}
 		return ResponseEntity.ok(student);
 	}
 	
-	@GetMapping("/all")
-	@ApiOperation(value = "Obtener todos los alumnos", notes = "Este servicio web obtiene una lista de todos los alumnos.", response = StudentsPage.class, responseContainer = "StudentsPage")
-	public ResponseEntity<RestResponsePage<StudentDto>> getAllStudents(@RequestParam(name = "page", required = false, defaultValue = "0") int page,
+	@GetMapping("/allList")
+	@ApiOperation(value = "Obtener toda la lista los alumnos", notes = "Este servicio web obtiene una lista de todos los alumnos.", response = StudentListDto.class, responseContainer = "StudentListDto")
+	public ResponseEntity<StudentListDto> getAllStudentsList() throws IOException {
+		StudentListDto studentListDto;
+		try {
+			studentListDto = this.studentDataService.getAllStudentsList();
+		}catch(Exception e) {
+			return new ResponseEntity("No encontrado", HttpStatus.NOT_FOUND);
+		}
+		return ResponseEntity.ok(studentListDto);
+	}
+	
+	@GetMapping("/allPage")
+	@ApiOperation(value = "Obtener todos los alumnos paginada", notes = "Este servicio web obtiene una lista de todos los alumnos paginada.", response = StudentsPage.class, responseContainer = "StudentsPage")
+	public ResponseEntity<RestResponsePage<StudentDto>> getAllStudentsPage(@RequestParam(name = "page", required = false, defaultValue = "0") int page,
 			@RequestParam(name = "size", required = false, defaultValue = "5") int size,
 			@ApiParam(value = "textToSearch", required = false) @RequestParam(required = false) String textToSearch) throws IOException {
 		//StudentListDto studentList;
 		StudentsListFilter studentsListFilter = new StudentsListFilter(page, size, textToSearch);
 		StudentsPage studentsPageWrapper = new StudentsPage();
 		try {
-			studentsPageWrapper = this.userDataService.getAllStudents(studentsListFilter);
+			studentsPageWrapper = this.studentDataService.getAllStudentsPage(studentsListFilter);
 		}catch(Exception e) {
 			return new ResponseEntity("No encontrado", HttpStatus.NOT_FOUND);
 		}
@@ -79,7 +91,7 @@ public class CabinetUserController {
 	public ResponseEntity<StudentDto> createStudent(@ApiParam(value = "student", required = false)@RequestBody StudentDto student) {
 		StudentDto studentDto;
 		try {
-			studentDto = this.userDataService.createStudent(student);
+			studentDto = this.studentDataService.createStudent(student);
 		}catch(Exception e) {
 			return new ResponseEntity("No encontrado", HttpStatus.NOT_FOUND);
 		}
@@ -92,7 +104,7 @@ public class CabinetUserController {
 	public ResponseEntity<StudentDto> updateStudent(@ApiParam(value = "student", required = false)@RequestBody StudentDto student) {
 		StudentDto studentDto;
 		try {
-			studentDto = this.userDataService.updateStudent(student);
+			studentDto = this.studentDataService.updateStudent(student);
 		}catch(Exception e) {
 			return new ResponseEntity("No encontrado", HttpStatus.NOT_FOUND);
 		}
@@ -102,7 +114,7 @@ public class CabinetUserController {
 	@DeleteMapping("/")
 	@ApiOperation(value = "Eliminar alumno", notes = "Este servicio web elimina el alumno y su diagnostico asociado.", response = Void.class, responseContainer = "Void")
 	public ResponseEntity<Void> deleteStudent(@ApiParam(name ="id", example="1", value = "id", required = false)@RequestParam(required = false) Long id) {
-		this.userDataService.deleteStudent(id);
+		this.studentDataService.deleteStudent(id);
 		return ResponseEntity.noContent().build();
 	}
 	

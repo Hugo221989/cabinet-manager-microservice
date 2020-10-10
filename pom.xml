@@ -107,6 +107,13 @@
 		    <artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		
+		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign -->
+		<dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+		
+		
 		
 
 		<dependency>
@@ -139,6 +146,11 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+			        <source>${java.version}</source>
+	                <target>${java.version}</target>
+	                <parameters>true</parameters>
+			    </configuration>
 			</plugin>
 		</plugins>
 		<finalName>cabinet-manager</finalName>
